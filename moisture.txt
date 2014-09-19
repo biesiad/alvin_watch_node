@@ -1,1 +1,1 @@
-26
+/home/pi/projects/RF24/RPi/RF24/examples/moisture.txt

@@ -1,5 +1,4 @@
 var fs = require('fs')
-var watch = require('watch')
 var twitter = require('twitter')
 var oauthKeys = require('./oauth_keys')
 
@@ -11,30 +10,26 @@ var twitterClient = new twitter({
 });
 
 var sendMessage = function (moisture) {
-  console.log("Moisture: " + moisture)
-  twitterClient.updateStatus('Test tweet from node-twitter/' + twitter.VERSION)
+  console.log("Sending... Moisture: " + moisture + "%")
+  twitterClient.updateStatus("Moisture: " + moisture + "%", function () {})
 }
 
-// var moistureFile = "/home/pi/projects/RF24/RPi/RF24/examples/"
-var moistureFile = "moisture.txt"
-var moistureFilePath = "./"
+var onMoistureUpdate = function (event, filename) {
+  var data = fs.readFileSync(filename, 'utf8')
+  var moisture = data === "" ? null : +data
 
-var readMoisture = function (file) {
-  return fs.readFileSync(file, 'utf8')
-}
+  if (moisture !== null) {
+    console.log("Updated " + oldMoisture + " -> " + moisture)
 
-watch.createMonitor(moistureFilePath, function (monitor) {
-  var oldMoisture = null;
-
-  monitor.files[moistureFile]
-
-  monitor.on("changed", function (file, current, previous) {
-    oldMoisture = oldMoisture || readMoisture(file)
-
-    var moisture = readMoisture(file)
-    if (Math.abs(moisture - oldMoisture) > 10) {
+    if (Math.abs(oldMoisture - moisture) > 10) {
       sendMessage(moisture)
       oldMoisture = moisture
     }
-  })
-})
+  }
+}
+
+var moistureFile = "/home/pi/projects/RF24/RPi/RF24/examples/moisture.txt"
+var oldMoisture = +fs.readFileSync(moistureFile, 'utf8')
+
+console.log("Waiting for moisture updates... (" + oldMoisture + ")")
+fs.watch(moistureFile, onMoistureUpdate)

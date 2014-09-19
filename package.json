@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies" : {
-    "twitter": "0.2.12",
-    "watch": "0.11.0"
+    "twitter": "",
   }
 }
