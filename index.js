@@ -1,23 +1,13 @@
 var fs = require('fs')
 var watch = require('watch')
 var twitter = require('twitter')
-
-
-// var getMoisture = function () {}
-
-// var oldMoisture = getMoisture()
-
-
-var consumerKey = "qAKoNq4H3Rp2RBvx01qihs27U"
-var consumerSecret = "JDDX0jXTSuAtuSRwuMFnLAeUgnM7jGhhGIS4PbSZv8ltKI1N7L"
-var oauthToken = "2754082412-chvSMcD0HvkxKQkgwry30LunteYPwcdMa9TnobO"
-var oauthTokenSecret = "Fj4eGknD35pLlWtKgnbX8pEziQR9sdcvev9cGmpwc26Rw"
+var oauthKeys = require('./oauth_keys')
 
 var twitterClient = new twitter({
-    consumer_key: consumerKey,
-    consumer_secret: consumerSecret,
-    access_token_key: oauthToken,
-    access_token_secret: oauthTokenSecret
+    consumer_key: oauthKeys.consumerKey,
+    consumer_secret: oauthKeys.consumerSecret,
+    access_token_key: oauthKeys.oauthToken,
+    access_token_secret: oauthKeys.oauthTokenSecret
 });
 
 var sendMessage = function (moisture) {
