@@ -21,7 +21,7 @@ var onMoistureUpdate = function (event, filename) {
   if (moisture !== null) {
     console.log("Updated " + oldMoisture + " -> " + moisture)
 
-    if (Math.abs(oldMoisture - moisture) > 10) {
+    if (moisture >= 0 && moisture <= 100 && Math.abs(oldMoisture - moisture) > 10) {
       sendMessage(moisture)
       oldMoisture = moisture
     }
